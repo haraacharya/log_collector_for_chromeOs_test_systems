@@ -87,10 +87,10 @@ class LogCollectorLib(object):
 	def collect_dut_logs(self, dut_ip):
 		if self.check_if_dut_is_live(dut_ip):
 			print "Deleting existing generate_log file if any."
-			if self.run_command_on_dut("ls -l /tmp/*.tgz", dut_ip):
-				self.run_command_on_dut("rm -rf /tmp/*.tgz", dut_ip)
-
 			log_path = "/home/chronos/log_dut_ip_" + dut_ip + ".tgz"
+			if self.run_command_on_dut("ls -l " + log_path, dut_ip):
+				self.run_command_on_dut("rm -rf " + log_path, dut_ip)
+			
 			out = subprocess.check_output(["sshpass", "-p", "test0000", "ssh", "-o", "StrictHostKeyChecking=no", "root@"+ dut_ip,"\'generate_logs\'", "--output=" + log_path])
 			if self.run_command_on_dut("ls -l " + log_path, dut_ip):
 				print "log_path is:", log_path
